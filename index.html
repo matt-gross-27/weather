@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Iconic -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" integrity="sha512-UyNhw5RNpQaCai2EdC+Js0QL4RlVmiq41DkmCJsRV3ZxipG2L0HhTqIf/H9Hp8ez2EnFlkBnjRGJU2stW3Lj+w==" crossorigin="anonymous" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>Weather</title>
+  </head>
+  <body class="container-fluid bg-light">
+    
+    <header class="bg-dark row justify-content-center">
+      <h1 class="text-center text-light">Weather Dashboard</h1>
+    </header>
+
+    <main class="row">
+      <section id="search-container" class= "col-12 col-lg-4 p-3">
+        <form class="d-flex flex-column border rounded p-3 bg-white">
+          <label class="font-weight-bold" for="search-input">
+            Search By City
+          </label>
+          <div class="d-flex justify-content-between">
+            <input class="w-100" type="text" id="search-input" placeholder="Enter City Here">
+            <button id="btn-search"><span class="oi oi-magnifying-glass"></span></button>
+          </div>
+        </form>
+        <div>
+          <ul class="list-group">
+            <li class="list-group-item">temp_del_recent_search</li>
+            <li class="list-group-item">Los Angeles</li>
+            <li class="list-group-item">New York</li>
+            <li class="list-group-item">Chicago</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="weather-container" class= "col-12 col-lg-8 p-3 pl-lg-0">
+        <article id="today-container" class="border rounded p-3 bg-white">
+          <h2>Los Angeles</h2>
+          <h3>Jan 22nd</h3>
+          <p>Temperature: 90.9 ℉</p>
+          <p>Humidity: 41%</p>
+          <p>WindSpeed: 4.7 MPH</p>
+          <p>UV Index: <span class="badge badge-danger">9.49</span></p>
+
+        </article>
+        <article id="five-day-container" class="border rounded p-3 mt-2 bg-white">
+          <h2>5-Day Forecast:</h2>
+          <!-- forecast deck -->
+          <div class="card-deck">
+            
+            <!-- forecast card start -->
+            <div class="card text-light bg-dark" style="max-width: 18rem;">
+              <h3 class="card-header px-0 text-center">Mon</h3>
+              <div class="card-body">
+                <div class="card-title">🌧</div>
+                <p class="card-text text-danger">Hi:</p>
+                <p class="card-text text-primary">Lo:</p>
+              </div>
+            </div>
+            <!-- forecast card end -->
+
+            <!-- forecast card start -->
+            <div class="card text-light bg-dark" style="max-width: 18rem;">
+              <h3 class="card-header px-0 text-center">Mon</h3>
+              <div class="card-body">
+                <div class="card-title">🌧</div>
+                <p class="card-text text-danger">Hi:</p>
+                <p class="card-text text-primary">Lo:</p>
+              </div>
+            </div>
+            <!-- forecast card end -->
+
+            <!-- forecast card start -->
+            <div class="card text-light bg-dark" style="max-width: 18rem;">
+              <h3 class="card-header px-0 text-center">Mon</h3>
+              <div class="card-body">
+                <div class="card-title">🌧</div>
+                <p class="card-text text-danger">Hi:</p>
+                <p class="card-text text-primary">Lo:</p>
+              </div>
+            </div>
+            <!-- forecast card end -->
+
+            <!-- forecast card start -->
+            <div class="card text-light bg-dark" style="max-width: 18rem;">
+              <h3 class="card-header px-0 text-center">Mon</h3>
+              <div class="card-body">
+                <div class="card-title">🌧</div>
+                <p class="card-text text-danger">Hi:</p>
+                <p class="card-text text-primary">Lo:</p>
+              </div>
+            </div>
+            <!-- forecast card end -->
+
+            <!-- forecast card start -->
+            <div class="card text-light bg-dark" style="max-width: 18rem;">
+              <h3 class="card-header px-0 text-center">Mon</h3>
+              <div class="card-body">
+                <div class="card-title">🌧</div>
+                <p class="card-text text-danger">Hi:</p>
+                <p class="card-text text-primary">Lo:</p>
+              </div>
+            </div>
+            <!-- forecast card end -->
+
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="./assets/js/script.js"></script>
+  </body>
+</html>

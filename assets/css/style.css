@@ -1,0 +1,54 @@
+h1 {
+  font-family: "Hachi Maru Pop";
+}
+
+#btn-search {
+  background-color:var(--green);
+  background-image: linear-gradient(45deg, #86ffcb 0%, #2bff87 52%, var(--green) 90%);
+  transition: all .5s ease-out;
+  border-radius: 0 5px 5px 0;
+  background-size: 1px 100px;
+  background-position: 0 -10px;
+  border-right: 1px solid var(--green);
+  border-bottom: 1px solid var(--green);
+  border-top: none;
+  border-left: none;
+}
+
+#btn-search:hover {
+  background-position: 1px -40px;
+}
+
+#btn-search:active {
+  outline :none;
+  border-right: none;
+  border-bottom: none;
+  border-top: 1px solid var(--green);
+  border-left: 1px solid var(--green);
+}
+
+#btn-search:focus {
+  outline :none;
+}
+
+#search-input {
+  border: 1px solid var(--green);
+  outline :none;
+  border-radius: 5px 0 0 5px;
+}
+
+img {
+  width: 80%;
+}
+
+.card-deck{
+  align-items: center;
+}
+
+.card {
+  width: 80%;
+}
+
+h3 {
+  font-size: 120%;
+}
