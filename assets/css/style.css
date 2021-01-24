@@ -37,18 +37,19 @@ h1 {
   border-radius: 5px 0 0 5px;
 }
 
-img {
-  width: 80%;
-}
-
 .card-deck{
   align-items: center;
 }
 
 .card {
-  width: 80%;
+  width: 75%;
 }
 
 h3 {
   font-size: 120%;
+}
+
+img {
+  object-fit: contain;
+  max-height: 265px;
 }
