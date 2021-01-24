@@ -11,7 +11,13 @@ var getSearchTerm = function(event) {
   var input = document.querySelector("#search-input")
   var searchTerm = input.value.toLowerCase().trim();
   fetchCurrentWeather(searchTerm);
-  input.textContent = "";
+  input.value = "";
+}
+
+// click li in search history to fetch weather
+var searchHistoryHandler = function(event) {
+  recentCity = event.target.textContent
+  fetchCurrentWeather(recentCity);
 }
 
 // get city weather
@@ -21,7 +27,7 @@ let fetchCurrentWeather = function(city) {
     res.json().then(function(currentWeather) {
       let cityName = currentWeather.name;
       // create java script date time object from weather api dt (10 dig num)
-      var dateTime = currentWeather.dt*1000;
+      var dateTime = moment.utc(currentWeather.dt*1000 + currentWeather.timezone*1000);
       // get temperature kelvin => Fahrenheit
       let tempF = Math.round((currentWeather.main.temp - 273.15)* 9/5 + 32);
       let humidity = currentWeather.main.humidity;
@@ -54,11 +60,29 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
     description: ${description}
     uvIndex: ${uvIndex}`
   );
+  
+  // clear today container El
+  todayContainerEl.textContent=""
+
+
   // add city to search history
   let searchHistoryItemEl = document.createElement("li");
   searchHistoryItemEl.classList = "list-group-item";
   searchHistoryItemEl.textContent = cityName;
-  searchHistoryListEl.appendChild(searchHistoryItemEl)
+  searchHistoryListEl.prepend(searchHistoryItemEl)
+  
+  let searchArr = $(".list-group-item")
+  let uniqueArr = []
+  for (let i = 0; i < searchArr.length; i++) {
+    if(!uniqueArr.includes(searchArr[i].innerText)) {
+      uniqueArr.push(searchArr[i].innerText);
+    }
+
+
+  }
+  console.log(uniqueArr)
+  console.log(searchArr)
+  
 
   // Populate #today-container index.html
   // - header
@@ -70,16 +94,12 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   cityNameEl.classList = "";
   
   let iconEl = document.createElement("img");
-  iconEl.classList = "col-12 col-sm-6 d-none d-sm-block";
+  iconEl.classList = "col-12 col-sm-6 d-none d-sm-block weather-icon";
   iconEl.setAttribute("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
   iconEl.setAttribute("alt", description);
   
-  let dateObj = new Date(dateTime);
-  console.log(dateObj);
-
-  // TO DO: format date text
   let dateTimeEl = document.createElement("p");
-  dateTimeEl.textContent = dateObj;
+  dateTimeEl.textContent = dateTime.format("MMM DD YYYY hh:mm a");
 
   let tempFEl = document.createElement("p");
   tempFEl.textContent = `Temperature: ${tempF}°F`
@@ -92,11 +112,17 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
 
   let uvIndexEl = document.createElement("p");
   uvIndexEl.textContent = `UV Index: ${uvIndex}`
-  // TO DO: make pill-badge dynamic
-  uvIndexEl.classList = "badge badge-pill badge-primary"
+  // dynamic pill badge
+  if(uvIndex >= 8) {
+    uvIndexEl.classList = "badge badge-danger"
+  } else if (uvIndex >= 6) {
+    uvIndexEl.classList = "badge badge-orange"
+  } else if (uvIndex >= 3) {
+    uvIndexEl.classList = "badge badge-warning"
+  } else {
+    uvIndexEl.classList = "badge badge-success"
+  }
 
-  
-  
   todayContainerEl.appendChild(weatherTextEl);
   todayContainerEl.appendChild(iconEl);
   
@@ -107,14 +133,8 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   weatherTextEl.appendChild(windSpeedMphEl);
   weatherTextEl.appendChild(uvIndexEl);
   // add today weather text
-
-
-
-
-
-
 };
 
 // Event Listeners
 searchFormEl.addEventListener("submit", getSearchTerm);
-
+searchHistoryListEl.addEventListener("click", searchHistoryHandler)

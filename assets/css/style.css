@@ -1,5 +1,20 @@
 h1 {
-  font-family: "Hachi Maru Pop";
+  font-size: 200%;
+}
+
+h3, h2 {
+  font-size: 150%;
+}
+
+/* Override bootstrap padding and margin on containers and rows */
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #btn-search {
@@ -45,11 +60,28 @@ h1 {
   width: 75%;
 }
 
-h3 {
-  font-size: 120%;
-}
-
-img {
+.weather-icon {
   object-fit: contain;
   max-height: 265px;
+}
+
+.badge-orange {
+  color: #fff;
+  background-color: #fa5902;
+}
+
+/* DISABLE FOR TOUCH DEVICE */
+.list-group-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--dark) 2px 2px 4px;
+  background-color: var(--green);
+  color: white;
+}
+
+.list-group-item:active {
+  transform: translate(0px, 0px);
+  box-shadow: var(--dark) -1px -1px;
+  transform: translate(1px, 1px);
+  background-color: white;
+  color: black;
 }
