@@ -24,7 +24,7 @@
 
     <main class="row">
       
-      <section id="search-container" class= "col-12 col-lg-4 px-3 pt-3 pb-lg-3 pr-lg-0">
+      <section id="search-container" class= "col-12 col-xl-4 px-3 pt-3 pb-xl-3 pr-xl-0">
         <form id="search-form" class="d-flex flex-column border rounded p-3 bg-white">
           <label class="font-weight-bold" for="search-input">
             Search By City
@@ -36,72 +36,15 @@
         </form>
         <div>
           <ul id="search-history" class="list-group pt-3">
+            <li class="list-group-item">Los Angeles</li>
           </ul>
         </div>
       </section>
       
-      <section id="weather-container" class= "col-12 col-lg-8 p-3">
+      <section id="weather-container" class= "col-12 col-xl-8 p-3">
         <article id="today-container" class="row border rounded p-3 bg-white"></article>
-        <article id="five-day-container" class="row border rounded p-3 mt-3 bg-white">
-          <h2 class="col-12">5-Day Forecast:</h2>
-          <!-- forecast deck -->
-          <div class="card-deck col-12">
-            
-            <!-- forecast card start -->
-            <div class="card text-light bg-dark" style="max-width: 18rem;">
-              <h3 class="card-header px-0 text-center">Mon</h3>
-              <div class="card-body">
-                <div class="card-title">🌧</div>
-                <p class="card-text text-danger">Hi:</p>
-                <p class="card-text text-primary">Lo:</p>
-              </div>
-            </div>
-            <!-- forecast card end -->
-
-            <!-- forecast card start -->
-            <div class="card text-light bg-dark" style="max-width: 18rem;">
-              <h3 class="card-header px-0 text-center">Mon</h3>
-              <div class="card-body">
-                <div class="card-title">🌧</div>
-                <p class="card-text text-danger">Hi:</p>
-                <p class="card-text text-primary">Lo:</p>
-              </div>
-            </div>
-            <!-- forecast card end -->
-
-            <!-- forecast card start -->
-            <div class="card text-light bg-dark" style="max-width: 18rem;">
-              <h3 class="card-header px-0 text-center">Mon</h3>
-              <div class="card-body">
-                <div class="card-title">🌧</div>
-                <p class="card-text text-danger">Hi:</p>
-                <p class="card-text text-primary">Lo:</p>
-              </div>
-            </div>
-            <!-- forecast card end -->
-
-            <!-- forecast card start -->
-            <div class="card text-light bg-dark" style="max-width: 18rem;">
-              <h3 class="card-header px-0 text-center">Mon</h3>
-              <div class="card-body">
-                <div class="card-title">🌧</div>
-                <p class="card-text text-danger">Hi:</p>
-                <p class="card-text text-primary">Lo:</p>
-              </div>
-            </div>
-            <!-- forecast card end -->
-
-            <!-- forecast card start -->
-            <div class="card text-light bg-dark" style="max-width: 18rem;">
-              <h3 class="card-header px-0 text-center">Mon</h3>
-              <div class="card-body">
-                <div class="card-title">🌧</div>
-                <p class="card-text text-danger">Hi:</p>
-                <p class="card-text text-primary">Lo:</p>
-              </div>
-            </div>
-            <!-- forecast card end -->
-
+        <article id="five-day-container" class="border rounded p-3 mt-3 bg-white scrolling-wrapper">
+            <!-- Dynamically add 5 day forecast data -->
           </div>
         </article>
       </section>

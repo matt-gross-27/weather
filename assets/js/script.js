@@ -1,10 +1,11 @@
 // Global variables
-let apiKey = "bfa05a6206f62e06173b627eb3956550"
+let apiKey = "95f2e58186a9f0347b641a4e8fc949ad"
 // dom references
 let searchHistoryListEl = document.querySelector("#search-history");
 let searchFormEl = document.querySelector("#search-form");
 let todayContainerEl = document.querySelector("#today-container");
-let searchArr = []
+let forecastContainerEl = document.querySelector("#five-day-container");
+let searchArr = [];
 
 // get user searchTerm
 var getSearchTerm = function(event) {
@@ -28,7 +29,7 @@ let fetchCurrentWeather = function(city) {
     res.json().then(function(currentWeather) {
       let cityName = currentWeather.name;
       // create java script date time object from weather api dt (10 dig num)
-      var dateTime = moment.utc(currentWeather.dt*1000 + currentWeather.timezone*1000);
+      let dateTime = moment.utc(currentWeather.dt*1000 + currentWeather.timezone*1000);
       // get temperature kelvin => Fahrenheit
       let tempF = Math.round((currentWeather.main.temp - 273.15)* 9/5 + 32);
       let humidity = currentWeather.main.humidity;
@@ -37,18 +38,95 @@ let fetchCurrentWeather = function(city) {
       // get lon and lat
       let lon = currentWeather.coord.lon;
       let lat = currentWeather.coord.lat;
-      var iconCode = currentWeather.weather[0].icon;
-      var description = currentWeather.weather[0].description;
+      let iconCode = currentWeather.weather[0].icon;
+      let description = currentWeather.weather[0].description;
       fetch(`http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`).then(function(res) {
         res.json().then(function(uvData) {
           let uvIndex = uvData.value;
           displayCurrentWeather(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex)
           displaySearchHistory(cityName);
         })
-      })
+      });
+      fiveDayForecast(lat,lon)
     })
   })
 };
+
+// get 5 day forecast
+let fiveDayForecast = function(lat, lon) {
+  apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+  fetch(apiUrl).then(function(res) {
+    res.json().then(function(fiveDayObj) {
+      console.log(fiveDayObj);
+      // CLEAR FORECAST CONTAINER
+      forecastContainerEl.textContent = ""
+      let daily = fiveDayObj.daily;
+      
+      // CREATE H2 
+      let forecastHeaderEl = document.createElement("h2");
+      forecastHeaderEl.textContent = "5-Day Forecast: ";
+      forecastContainerEl.appendChild(forecastHeaderEl);
+      
+      // start forecast loop tomorrow if after 4pm
+      if (moment().get('hour') >= 16) {
+        start = 1
+      } else {
+        start = 0
+      };
+
+      for (let i = start; i < start + 5; i++) {
+        // CREATE MY VARIABLES 
+        let iconCode = daily[i].weather[0].icon;
+        let dateTime = moment.utc(daily[i].sunrise*1000 + fiveDayObj.timezone_offset*1000);
+        console.log(dateTime);
+        let hiF = Math.round((daily[i].temp.max - 273.15)* 9/5 + 32);
+        let loF = Math.round((daily[i].temp.min - 273.15)* 9/5 + 32);
+        let hum = daily[i].humidity
+
+        // CREATE CARD
+        let cardEl = document.createElement("div");
+        cardEl.classList = "card text-light bg-dark";
+        // Create card header
+        let cardHeaderEl = document.createElement("h3");
+        cardHeaderEl.classList = "card-header px-0 text-center";
+        cardHeaderEl.textContent = dateTime.format("ddd");
+        
+        // Create card-body
+        let cardBodyEl = document.createElement("div");
+        cardBodyEl.classList = "card-body";
+        let cardIconEl = document.createElement("img");
+        // icon
+        cardIconEl.classList = "card-img"
+        cardIconEl.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+        cardIconEl.alt = daily[i].weather[0].description;
+        // hi
+        hiFEl = document.createElement("p");
+        hiFEl.classList = "card-text text-danger"
+        hiFEl.textContent = `Hi: ${hiF}°F`
+        // lo
+        loFEl = document.createElement("p");
+        loFEl.classList = "card-text text-primary"
+        loFEl.textContent = `Lo: ${loF}°F`
+        // hum
+        humEl = document.createElement("p");
+        humEl.classList = "card-text text-light"
+        humEl.textContent = `humidity: ${hum}%`
+        // APPEND TO DOM
+        // append weatherInfo to card body
+        cardBodyEl.appendChild(cardIconEl);
+        cardBodyEl.appendChild(hiFEl);
+        cardBodyEl.appendChild(loFEl);
+        cardBodyEl.appendChild(humEl);
+        // append header and body to card
+        cardEl.appendChild(cardHeaderEl);
+        cardEl.appendChild(cardBodyEl);
+        // append whole card to card deck
+        forecastContainerEl.appendChild(cardEl);
+      }
+    })
+  });
+};
+
 
 var displaySearchHistory = function(cityName) {
     // add city to search history
