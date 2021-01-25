@@ -76,6 +76,10 @@ h3, h2 {
 
 .weather-icon-xs {
   float: right;
+  position: absolute;
+  right: -16px;
+  bottom: -16px;
+  border: 1px solid var(--dark);
 }
 
 .badge-orange {
@@ -90,6 +94,10 @@ h3, h2 {
   color: black;
 }
 
+li .oi {
+  font-size: 150%;
+}
+
 .ui-state-highlight {
   height: 60px;
   list-style: none;
@@ -102,11 +110,16 @@ h3, h2 {
   white-space: nowrap;
 }
 
+#five-day-container h2 {
+  position: absolute;
+}
+
 .card {
   min-width: 160px;
   max-width: 17.5%;
   display: inline-block;
   margin: 0 15px;
+  margin-top: 42px;
 }
 
 @media (hover: none) and (pointer: coarse) {

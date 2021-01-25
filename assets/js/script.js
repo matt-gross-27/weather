@@ -9,20 +9,28 @@ let weatherContainerEl = document.querySelector("#weather-container")
 let searchArr = [];
 
 // get user searchTerm
-var searchFormHandler = function(event) {
+let searchFormHandler = function(event) {
   event.preventDefault();
-  var input = document.querySelector("#search-input")
-  var searchTerm = input.value.toLowerCase().trim();
+  let input = document.querySelector("#search-input")
+  let searchTerm = input.value.toLowerCase().trim();
   fetchCurrentWeather(searchTerm);
-  $(weatherContainerEl).removeClass("d-none")
   input.value = "";
 }
 
 // click li in search history to fetch weather
-var searchHistoryHandler = function(event) {
-  $(weatherContainerEl).removeClass("d-none")
-  recentCity = event.target.textContent
-  fetchCurrentWeather(recentCity);
+let searchHistoryHandler = function(event) {
+  if (event.target.hasAttribute("id","delete")) {
+    event.target.parentElement.remove();
+    searchArr = [];
+    $(".list-group").children().each(function() {
+      let city = $(this).text();
+      searchArr.push(city)
+    });
+    saveHistory();
+  } else {
+    recentCity = event.target.textContent
+    fetchCurrentWeather(recentCity);
+  }
 }
 
 // get city weather
@@ -47,10 +55,10 @@ let fetchCurrentWeather = function(city) {
         res.json().then(function(uvData) {
           let uvIndex = uvData.value;
           displayCurrentWeather(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex)
-          displaySearchHistory(cityName);
+          addSearchItem(cityName);
         })
       });
-      fiveDayForecast(lat,lon)
+      fiveDayForecast(lat,lon);
     })
   })
 };
@@ -60,7 +68,6 @@ let fiveDayForecast = function(lat, lon) {
   apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
   fetch(apiUrl).then(function(res) {
     res.json().then(function(fiveDayObj) {
-      console.log(fiveDayObj);
       // CLEAR FORECAST CONTAINER
       forecastContainerEl.textContent = ""
       let daily = fiveDayObj.daily;
@@ -81,7 +88,6 @@ let fiveDayForecast = function(lat, lon) {
         // CREATE MY VARIABLES 
         let iconCode = daily[i].weather[0].icon;
         let dateTime = moment.utc(daily[i].sunrise*1000 + fiveDayObj.timezone_offset*1000);
-        console.log(dateTime);
         let hiF = Math.round((daily[i].temp.max - 273.15)* 9/5 + 32);
         let loF = Math.round((daily[i].temp.min - 273.15)* 9/5 + 32);
         let hum = daily[i].humidity
@@ -130,10 +136,9 @@ let fiveDayForecast = function(lat, lon) {
   });
 };
 
-
-var displaySearchHistory = function(cityName) {
+let addSearchItem = function(cityName) {
     // add city to search history
-    searchArr.push(cityName);
+    searchArr.unshift(cityName);
     let uniqueArr = []
     // solve unique search history
     for (let i = 0; i < searchArr.length; i++) {
@@ -141,28 +146,27 @@ var displaySearchHistory = function(cityName) {
         uniqueArr.unshift(searchArr[i]);
       }
     }
-  
-    // clear search history list
-    searchHistoryListEl.textContent= ""
-    // append each unique search history li
-    for (let i = 0; i < uniqueArr.length; i++) {
-      let searchHistoryItemEl = document.createElement("li");
-      searchHistoryItemEl.classList = "list-group-item";
-      searchHistoryItemEl.textContent = uniqueArr[i];
-      searchHistoryListEl.appendChild(searchHistoryItemEl)
-    }
-  
-    // make searchHistory sortable
-  $( "#search-history" ).sortable({
-    placeholder: "ui-state-highlight",
-    tolerance: "pointer",
-    helper: "clone"
-  });
-  
-  
+  searchArr = uniqueArr.reverse();
+  saveHistory();
+  displayHistory();
 }
-
-var displayCurrentWeather = function(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex) {  
+  
+// make searchHistory sortable
+$( "#search-history" ).sortable({
+  placeholder: "ui-state-highlight",
+  tolerance: "pointer",
+  containment: $(searchHistoryListEl),
+  update: function(event) {
+    searchArr = [];
+    $(this).children().each(function() {
+      let city = $(this).text();
+      searchArr.push(city)
+    });
+    saveHistory();
+  }
+});
+  
+let displayCurrentWeather = function(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex) {  
   // clear today container El
   todayContainerEl.textContent=""
 
@@ -186,7 +190,7 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   iconXsEl.setAttribute("alt", description);
   
   let dateTimeEl = document.createElement("p");
-  dateTimeEl.textContent = dateTime.format("MMM DD YYYY hh:mm a");
+  dateTimeEl.textContent = dateTime.format("MMM DD");
 
   let tempFEl = document.createElement("p");
   tempFEl.textContent = `Temperature: ${tempF}°F`
@@ -222,6 +226,46 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   // add today weather text
 };
 
+// saveHistory
+let saveHistory = function() {
+  localStorage.setItem("weatherSearchHistory", JSON.stringify(searchArr));  
+}
+
+// loadHistory
+let loadHistory = function() {
+  searchArr = JSON.parse(localStorage.getItem("weatherSearchHistory"))
+  if (!searchArr) {
+  searchArr = [];
+  localStorage.setItem("weatherSearchHistory", JSON.stringify(searchArr));
+  } else {
+    displayHistory(searchArr);
+    fetchCurrentWeather(searchArr[0]);
+    
+  }
+}
+
+
+var displayHistory = function() {
+  // clear search history list
+  searchHistoryListEl.textContent= ""
+  // append each unique search history li
+  for (let i = 0; i < searchArr.length; i++) {
+    let searchHistoryItemEl = document.createElement("li");
+    searchHistoryItemEl.classList = "list-group-item d-flex justify-content-between";
+    searchHistoryItemEl.textContent = searchArr[i];
+    let deleteButton = document.createElement("span");
+    deleteButton.classList = "oi oi-delete";
+    deleteButton.setAttribute ("id", "delete");
+    searchHistoryItemEl.appendChild(deleteButton);
+    searchHistoryListEl.appendChild(searchHistoryItemEl);
+  }
+}
+
+
+  
+
 // Event Listeners
 searchFormEl.addEventListener("submit", searchFormHandler);
 searchHistoryListEl.addEventListener("click", searchHistoryHandler);
+
+loadHistory();
