@@ -1,3 +1,7 @@
+:root {
+  --green: rgb(143, 235, 143);
+}
+
 h1 {
   font-size: 200%;
 }
@@ -35,15 +39,24 @@ h3, h2 {
 }
 
 #btn-search:active {
-  outline :none;
-  border-right: none;
-  border-bottom: none;
-  border-top: 1px solid var(--green);
-  border-left: 1px solid var(--green);
+  background-color:var(--green);
+  background-image: linear-gradient(45deg, #86ffcb 0%, #2bff87 52%, var(--green) 90%);
 }
 
 #btn-search:focus {
   outline :none;
+}
+
+.list-group-item:hover {
+  background-image: linear-gradient(45deg, #86ffcb 0%, #2bff87 52%, var(--green) 90%);
+  border-radius: 0 5px 5px 0;
+  background-size: 1px 100px;
+  background-position: 0 -10px;
+}
+
+.list-group-item:active {
+  background-position: 1px -40px;
+  /* transition: .1s; */
 }
 
 #search-input {
@@ -65,23 +78,34 @@ h3, h2 {
   max-height: 265px;
 }
 
+.weather-icon-xs {
+  margin-left: 35%;
+  margin-right: 35%;
+  width: 30%;
+}
+
 .badge-orange {
   color: #fff;
   background-color: #fa5902;
 }
 
-/* DISABLE FOR TOUCH DEVICE */
-.list-group-item:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--dark) 2px 2px 4px;
-  background-color: var(--green);
-  color: white;
-}
-
 .list-group-item:active {
   transform: translate(0px, 0px);
-  box-shadow: var(--dark) -1px -1px;
-  transform: translate(1px, 1px);
+  box-shadow: none;
   background-color: white;
   color: black;
+}
+
+.ui-state-highlight {
+  height: 60px;
+  list-style: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .list-group-item:active {
+    background-image: linear-gradient(45deg, #86ffcb 0%, #2bff87 52%, var(--green) 90%);
+    border-radius: 0 5px 5px 0;
+    background-size: 1px 100px;
+    background-position: 0 -10px;
+  }
 }

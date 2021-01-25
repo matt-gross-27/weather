@@ -4,6 +4,7 @@ let apiKey = "bfa05a6206f62e06173b627eb3956550"
 let searchHistoryListEl = document.querySelector("#search-history");
 let searchFormEl = document.querySelector("#search-form");
 let todayContainerEl = document.querySelector("#today-container");
+let searchArr = []
 
 // get user searchTerm
 var getSearchTerm = function(event) {
@@ -42,47 +43,47 @@ let fetchCurrentWeather = function(city) {
         res.json().then(function(uvData) {
           let uvIndex = uvData.value;
           displayCurrentWeather(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex)
+          displaySearchHistory(cityName);
         })
       })
     })
   })
 };
 
-var displayCurrentWeather = function(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex) {
-  console.log(
-    `
-    cityName: ${cityName}
-    dateTime: ${dateTime}
-    tempF: ${tempF}
-    humidity: ${humidity}
-    windSpeedMph: ${windSpeedMph}
-    iconCode: ${iconCode}
-    description: ${description}
-    uvIndex: ${uvIndex}`
-  );
+var displaySearchHistory = function(cityName) {
+    // add city to search history
+    searchArr.push(cityName);
+    let uniqueArr = []
+    // solve unique search history
+    for (let i = 0; i < searchArr.length; i++) {
+      if(!uniqueArr.includes(searchArr[i])) {
+        uniqueArr.unshift(searchArr[i]);
+      }
+    }
   
+    // clear search history list
+    searchHistoryListEl.textContent= ""
+    // append each unique search history li
+    for (let i = 0; i < uniqueArr.length; i++) {
+      let searchHistoryItemEl = document.createElement("li");
+      searchHistoryItemEl.classList = "list-group-item";
+      searchHistoryItemEl.textContent = uniqueArr[i];
+      searchHistoryListEl.appendChild(searchHistoryItemEl)
+    }
+  
+    // make searchHistory sortable
+  $( "#search-history" ).sortable({
+    placeholder: "ui-state-highlight",
+    tolerance: "pointer",
+    helper: "clone"
+  });
+  
+  
+}
+
+var displayCurrentWeather = function(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex) {  
   // clear today container El
   todayContainerEl.textContent=""
-
-
-  // add city to search history
-  let searchHistoryItemEl = document.createElement("li");
-  searchHistoryItemEl.classList = "list-group-item";
-  searchHistoryItemEl.textContent = cityName;
-  searchHistoryListEl.prepend(searchHistoryItemEl)
-  
-  let searchArr = $(".list-group-item")
-  let uniqueArr = []
-  for (let i = 0; i < searchArr.length; i++) {
-    if(!uniqueArr.includes(searchArr[i].innerText)) {
-      uniqueArr.push(searchArr[i].innerText);
-    }
-
-
-  }
-  console.log(uniqueArr)
-  console.log(searchArr)
-  
 
   // Populate #today-container index.html
   // - header
@@ -93,10 +94,15 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   cityNameEl.textContent = cityName;
   cityNameEl.classList = "";
   
-  let iconEl = document.createElement("img");
-  iconEl.classList = "col-12 col-sm-6 d-none d-sm-block weather-icon";
-  iconEl.setAttribute("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
-  iconEl.setAttribute("alt", description);
+  let iconSmEl = document.createElement("img");
+  iconSmEl.classList = "col-12 col-sm-6 d-none d-sm-block weather-icon";
+  iconSmEl.setAttribute("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
+  iconSmEl.setAttribute("alt", description);
+
+  let iconXsEl = document.createElement("img");
+  iconXsEl.classList = "d-sm-none weather-icon-xs";
+  iconXsEl.setAttribute("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
+  iconXsEl.setAttribute("alt", description);
   
   let dateTimeEl = document.createElement("p");
   dateTimeEl.textContent = dateTime.format("MMM DD YYYY hh:mm a");
@@ -124,9 +130,9 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   }
 
   todayContainerEl.appendChild(weatherTextEl);
-  todayContainerEl.appendChild(iconEl);
-  
+  todayContainerEl.appendChild(iconSmEl);
   weatherTextEl.appendChild(cityNameEl);
+  weatherTextEl.appendChild(iconXsEl);
   weatherTextEl.appendChild(dateTimeEl);
   weatherTextEl.appendChild(tempFEl);
   weatherTextEl.appendChild(humidityEl);
@@ -137,4 +143,4 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
 
 // Event Listeners
 searchFormEl.addEventListener("submit", getSearchTerm);
-searchHistoryListEl.addEventListener("click", searchHistoryHandler)
+searchHistoryListEl.addEventListener("click", searchHistoryHandler);
