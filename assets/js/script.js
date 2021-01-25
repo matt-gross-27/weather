@@ -5,19 +5,22 @@ let searchHistoryListEl = document.querySelector("#search-history");
 let searchFormEl = document.querySelector("#search-form");
 let todayContainerEl = document.querySelector("#today-container");
 let forecastContainerEl = document.querySelector("#five-day-container");
+let weatherContainerEl = document.querySelector("#weather-container")
 let searchArr = [];
 
 // get user searchTerm
-var getSearchTerm = function(event) {
+var searchFormHandler = function(event) {
   event.preventDefault();
   var input = document.querySelector("#search-input")
   var searchTerm = input.value.toLowerCase().trim();
   fetchCurrentWeather(searchTerm);
+  $(weatherContainerEl).removeClass("d-none")
   input.value = "";
 }
 
 // click li in search history to fetch weather
 var searchHistoryHandler = function(event) {
+  $(weatherContainerEl).removeClass("d-none")
   recentCity = event.target.textContent
   fetchCurrentWeather(recentCity);
 }
@@ -220,5 +223,5 @@ var displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
 };
 
 // Event Listeners
-searchFormEl.addEventListener("submit", getSearchTerm);
+searchFormEl.addEventListener("submit", searchFormHandler);
 searchHistoryListEl.addEventListener("click", searchHistoryHandler);
