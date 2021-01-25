@@ -3,7 +3,7 @@ h1 {
 }
 
 h3, h2 {
-  font-size: 150%;
+  font-size: 160%;
 }
 
 /* Override bootstrap padding and margin on containers and rows */
@@ -79,7 +79,9 @@ h3, h2 {
   position: absolute;
   right: -16px;
   bottom: -16px;
-  border: 1px solid var(--dark);
+  border-left: 1px solid var(--dark);
+  border-top: 1px solid var(--dark);
+  border-radius: 5px 0 0 0;
 }
 
 .badge-orange {
@@ -110,6 +112,12 @@ li .oi {
   white-space: nowrap;
 }
 
+#today-container h2 {
+  position: absolute;
+  top: -45px;
+  left: 0;
+}
+
 #five-day-container h2 {
   position: absolute;
 }
@@ -119,6 +127,10 @@ li .oi {
   max-width: 17.5%;
   display: inline-block;
   margin: 0 15px;
+  margin-top: 42px;
+}
+
+.offset-down {
   margin-top: 42px;
 }
 

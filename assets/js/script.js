@@ -94,7 +94,7 @@ let fiveDayForecast = function(lat, lon) {
 
         // CREATE CARD
         let cardEl = document.createElement("div");
-        cardEl.classList = "card text-light bg-dark";
+        cardEl.classList = "card text-dark bg-light";
         // Create card header
         let cardHeaderEl = document.createElement("h3");
         cardHeaderEl.classList = "card-header px-0 text-center";
@@ -118,8 +118,8 @@ let fiveDayForecast = function(lat, lon) {
         loFEl.textContent = `Lo: ${loF}°F`
         // hum
         humEl = document.createElement("p");
-        humEl.classList = "card-text text-light"
-        humEl.textContent = `humidity: ${hum}%`
+        humEl.classList = "card-text text-warning"
+        humEl.textContent = `Humidity: ${hum}%`
         // APPEND TO DOM
         // append weatherInfo to card body
         cardBodyEl.appendChild(cardIconEl);
@@ -173,7 +173,7 @@ let displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   // Populate #today-container index.html
   // - header
   let weatherTextEl = document.createElement("div");
-  weatherTextEl.classList = "col-12 col-sm-6";
+  weatherTextEl.classList = "col-12 col-sm-6 offset-down";
 
   let cityNameEl = document.createElement("h2");
   cityNameEl.textContent = cityName;
