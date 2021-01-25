@@ -35,7 +35,7 @@ let searchHistoryHandler = function(event) {
 
 // get city weather
 let fetchCurrentWeather = function(city) {
-  let apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
   fetch(apiUrl).then(function(res) {
     res.json().then(function(currentWeather) {
       let cityName = currentWeather.name;
@@ -51,7 +51,7 @@ let fetchCurrentWeather = function(city) {
       let lat = currentWeather.coord.lat;
       let iconCode = currentWeather.weather[0].icon;
       let description = currentWeather.weather[0].description;
-      fetch(`http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`).then(function(res) {
+      fetch(`https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`).then(function(res) {
         res.json().then(function(uvData) {
           let uvIndex = uvData.value;
           displayCurrentWeather(cityName, iconCode, description, dateTime, tempF, humidity, windSpeedMph, uvIndex)
