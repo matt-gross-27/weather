@@ -261,9 +261,6 @@ var displayHistory = function() {
   }
 }
 
-
-  
-
 // Event Listeners
 searchFormEl.addEventListener("submit", searchFormHandler);
 searchHistoryListEl.addEventListener("click", searchHistoryHandler);
