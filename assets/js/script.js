@@ -293,23 +293,3 @@ searchFormEl.addEventListener("submit", searchFormHandler);
 searchHistoryListEl.addEventListener("click", searchHistoryHandler);
 
 loadHistory();
-
-
-
-
-// TEST CURRENT POSITION FUNCTION
-
-var showPosition = function (position) {
-  let apiUrl = `api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}`
-  fetch(apiUrl).then(function(res) {
-    if (res.ok) {
-      res.json().then(function(data) {
-        console.log(data);
-      })
-    } else {
-      return false
-    }
-  })
-};
-
-navigator.geolocation.getCurrentPosition(showPosition)
