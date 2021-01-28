@@ -5,7 +5,7 @@ let searchHistoryListEl = document.querySelector("#search-history");
 let searchFormEl = document.querySelector("#search-form");
 let todayContainerEl = document.querySelector("#today-container");
 let forecastContainerEl = document.querySelector("#five-day-container");
-let weatherContainerEl = document.querySelector("#weather-container")
+let weatherContainerEl = document.querySelector("#weather-container");
 let searchArr = [];
 
 // get user searchTerm
@@ -36,10 +36,6 @@ let searchHistoryHandler = function(event) {
 // get city weather
 let fetchCurrentWeather = function(city) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
-  // don't fetch if city is null
-  if(!city) {
-    return;
-  }
   fetch(apiUrl).then(function(res) {
     if (res.ok) {
       res.json().then(function(currentWeather) {
@@ -266,8 +262,8 @@ let loadHistory = function() {
   localStorage.setItem("weatherSearchHistory", JSON.stringify(searchArr));
   } else {
     displayHistory(searchArr);
-    // load top item in search history list
     fetchCurrentWeather(searchArr[0]);
+    
   }
 }
 
@@ -287,6 +283,19 @@ var displayHistory = function() {
     searchHistoryListEl.appendChild(searchHistoryItemEl);
   }
 }
+
+// GEO LOCATION
+
+var getLocation = function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(usePosition);
+  }
+};
+
+let usePosition = function(position) {
+  console.log(position.coords.latitude);
+  console.log(position.coords.longitude);
+};
 
 // Event Listeners
 searchFormEl.addEventListener("submit", searchFormHandler);
