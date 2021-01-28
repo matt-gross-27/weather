@@ -35,6 +35,10 @@ let searchHistoryHandler = function(event) {
 
 // get city weather
 let fetchCurrentWeather = function(city) {
+  // if city is null stop
+  if(!city) {
+    return
+  }
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
   fetch(apiUrl).then(function(res) {
     if (res.ok) {
