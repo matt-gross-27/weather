@@ -6,7 +6,7 @@
 - [Github Repo](https://github.com/matt-gross-27/weather)
 
 ## Layout
-![Mockup](./assets/images/mockup.png)
+![Screenshot](./assets/images/screenshot.png)
 
 ## Features
 - Search a city to view weather information
