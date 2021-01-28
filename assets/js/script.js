@@ -3,9 +3,9 @@ let apiKey = "95f2e58186a9f0347b641a4e8fc949ad"
 // dom references
 let searchHistoryListEl = document.querySelector("#search-history");
 let searchFormEl = document.querySelector("#search-form");
+let weatherContainerEl = document.querySelector("#weather-container");
 let todayContainerEl = document.querySelector("#today-container");
 let forecastContainerEl = document.querySelector("#five-day-container");
-let weatherContainerEl = document.querySelector("#weather-container");
 let searchArr = [];
 
 // get user searchTerm
@@ -26,6 +26,9 @@ let searchHistoryHandler = function(event) {
       let city = $(this).text();
       searchArr.push(city)
     });
+    if(searchArr.length === 0) {
+      searchHistoryListEl.classList.add("d-none")
+    }
     saveHistory();
   } else {
     recentCity = event.target.textContent
@@ -42,6 +45,7 @@ let fetchCurrentWeather = function(city) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
   fetch(apiUrl).then(function(res) {
     if (res.ok) {
+      weatherContainerEl.classList.remove("d-none")
       res.json().then(function(currentWeather) {
         let cityName = currentWeather.name;
         // create java script date time object from weather api dt (10 dig num)
@@ -55,8 +59,7 @@ let fetchCurrentWeather = function(city) {
         let lon = currentWeather.coord.lon;
         let lat = currentWeather.coord.lat;
         let iconCode = currentWeather.weather[0].icon;
-        let description = currentWeather.weather[0].description;
-        
+        let description = currentWeather.weather[0].description;        
         fetch(`https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`)
           .then(function(res) {
             if(res.ok) {
@@ -127,7 +130,7 @@ let fiveDayForecast = function(lat, lon) {
           let cardIconEl = document.createElement("img");
           // icon
           cardIconEl.classList = "card-img"
-          cardIconEl.src = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+          cardIconEl.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`
           cardIconEl.alt = daily[i].weather[0].description;
           // hi
           hiFEl = document.createElement("p");
@@ -208,12 +211,12 @@ let displayCurrentWeather = function(cityName, iconCode, description, dateTime, 
   
   let iconSmEl = document.createElement("img");
   iconSmEl.classList = "col-12 col-sm-6 d-none d-sm-block weather-icon";
-  iconSmEl.setAttribute("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
+  iconSmEl.setAttribute("src", `https://openweathermap.org/img/wn/${iconCode}@2x.png`);
   iconSmEl.setAttribute("alt", description);
 
   let iconXsEl = document.createElement("img");
   iconXsEl.classList = "d-sm-none weather-icon-xs";
-  iconXsEl.setAttribute("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
+  iconXsEl.setAttribute("src", `https://openweathermap.org/img/wn/${iconCode}@2x.png`);
   iconXsEl.setAttribute("alt", description);
   
   let dateTimeEl = document.createElement("p");
@@ -271,20 +274,23 @@ let loadHistory = function() {
   }
 }
 
-
 var displayHistory = function() {
   // clear search history list
   searchHistoryListEl.textContent= ""
-  // append each unique search history li
-  for (let i = 0; i < searchArr.length; i++) {
-    let searchHistoryItemEl = document.createElement("li");
-    searchHistoryItemEl.classList = "list-group-item d-flex justify-content-between";
-    searchHistoryItemEl.textContent = searchArr[i];
-    let deleteButton = document.createElement("span");
-    deleteButton.classList = "oi oi-delete";
-    deleteButton.setAttribute ("id", "delete");
-    searchHistoryItemEl.appendChild(deleteButton);
-    searchHistoryListEl.appendChild(searchHistoryItemEl);
+  if (searchArr.length > 0) {
+    searchHistoryListEl.classList.remove("d-none")
+    // weatherContainerEl.classList.remove("d-none")
+    // append each unique search history li
+    for (let i = 0; i < searchArr.length; i++) {
+      let searchHistoryItemEl = document.createElement("li");
+      searchHistoryItemEl.classList = "list-group-item d-flex justify-content-between";
+      searchHistoryItemEl.textContent = searchArr[i];
+      let deleteButton = document.createElement("span");
+      deleteButton.classList = "oi oi-delete";
+      deleteButton.setAttribute ("id", "delete");
+      searchHistoryItemEl.appendChild(deleteButton);
+      searchHistoryListEl.appendChild(searchHistoryItemEl);
+    }
   }
 }
 
