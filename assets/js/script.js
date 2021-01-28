@@ -284,19 +284,6 @@ var displayHistory = function() {
   }
 }
 
-// GEO LOCATION
-
-var getLocation = function() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(usePosition);
-  }
-};
-
-let usePosition = function(position) {
-  console.log(position.coords.latitude);
-  console.log(position.coords.longitude);
-};
-
 // Event Listeners
 searchFormEl.addEventListener("submit", searchFormHandler);
 searchHistoryListEl.addEventListener("click", searchHistoryHandler);
