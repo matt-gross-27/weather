@@ -79,9 +79,6 @@ h3, h2 {
   position: absolute;
   right: -16px;
   bottom: -16px;
-  border-left: 1px solid var(--dark);
-  border-top: 1px solid var(--dark);
-  border-radius: 5px 0 0 0;
 }
 
 .badge-orange {
@@ -128,6 +125,10 @@ li .oi {
   display: inline-block;
   margin: 0 15px;
   margin-top: 42px;
+}
+
+.card-body {
+  padding-top: 0;
 }
 
 .offset-down {
